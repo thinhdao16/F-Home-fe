@@ -1,5 +1,5 @@
 import "./login.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GoogleButton from "react-google-button";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../components/context/AuthContext";
@@ -7,41 +7,51 @@ import { UserAuth } from "../../components/context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
   const { googleSignIn, user, accessToken } = UserAuth();
-const handleGoogleSignIn = async () => {
-  try {
-    await googleSignIn();
+  const [fullName, setFullName] = useState("");
+console.log(user)
+  useEffect(() => {
+    console.log(fullName); // log the updated value of fullName after it has been updated
+  }, [fullName]);
 
-    if (accessToken) {
-      const response = await fetch(
-        "http://178.128.223.115:8080/api/v1/auth/sign-in",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ accessToken: accessToken }),
-        }
-      );
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+      if (accessToken) {
+        const response = await fetch(
+          "http://178.128.223.115:8080/api/v1/auth/sign-in",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ accessToken: accessToken }),
+          }
+        );
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data !== undefined) {
-          localStorage.setItem("access_token", data.token);
-          console.log(data);
-          navigate("/home");
+        if (response.ok) {
+          const data = await response.json();
+          if (data !== undefined) {
+            localStorage.setItem("access_token", data?.data?.user?.fullname);
+            const fullNameFromServer = data?.data?.user?.fullname;
+            console.log(fullNameFromServer);
+            setFullName(fullNameFromServer); 
+            console.log(data)// set the value of fullName
+            navigate("/home");
+          } else {
+            console.log("No data returned from server");
+          }
         } else {
-          console.log("No data returned from server");
+          console.log("Response not OK");
         }
       } else {
-        console.log("Response not OK");
+        console.log("Access token not found");
       }
-    } else {
-      console.log("Access token not found");
+    } catch (error) {
+      console.log("error", error);
     }
-  } catch (error) {
-    console.log("error",error);
-  }
-};
+  };
+  // render the component with the fullName value
+
 
 
   

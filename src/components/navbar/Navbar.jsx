@@ -32,7 +32,7 @@ const Navbar = () => {
             <div className='counter'>2</div>
           </div>
           <div className="item">
-            <img src={user?.phoURL} alt="user" className='avatar' />
+            <img src={user?.photoURL} alt="user" className='avatar' />
           </div>
         </div>
       </div>

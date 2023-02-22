@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import React from 'react';
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
@@ -11,13 +11,14 @@ import Protected from './components/context/Protected';
 
 function App() {
   return (
-    <div className="App">
+    <React.Fragment>
       <AuthContextProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/">
+            <Route exact path="" element={<Login />} />
+              
               <Route path='home' element={<Protected><Home /></Protected>} />
-              <Route exact path="" element={<Login />} />
               <Route path="users">
                 <Route index element={<Protected>
                   <List /></Protected>} />
@@ -34,7 +35,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>
-    </div>
+    </React.Fragment>
   );
 }
 
