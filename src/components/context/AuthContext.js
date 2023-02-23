@@ -43,7 +43,7 @@ export function AuthContextProvider({ children }) {
       } else {
         logOut();
         setTimeout(() => {
-          alert("Please Login by account FPT University");
+          alert("Please you dont admin please dont enter");
         }, 1000);
       }
     });
