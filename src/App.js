@@ -12,30 +12,24 @@ import Protected from './components/context/Protected';
 function App() {
   return (
     <React.Fragment>
-      <AuthContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/">
+    <AuthContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            {/* <Route path="/home" element={<Protected><Home /></Protected>} />
+            <Route path="/profile" element={<List />} /> */}
+            <Route path='home' >
+                <Route index element={<Protected><Home /></Protected>}/>
+                <Route path='profile' element={<List />} />
+              </Route>
             <Route exact path="" element={<Login />} />
-              
-              <Route path='home' element={<Protected><Home /></Protected>} />
-              <Route path="users">
-                <Route index element={<Protected>
-                  <List /></Protected>} />
-                <Route path=":userId" element={<Single />} />
-                <Route path="new" element={<New />} />
-              </Route>
-              <Route path="products">
-                <Route index element={<List />} />
-                <Route path=":productId" element={<Single />} />
-                <Route path="new" element={<New />} />
-              </Route>
-              <Route path='/new' element={<New />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </AuthContextProvider>
-    </React.Fragment>
+
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthContextProvider>
+  </React.Fragment>
+  
   );
 }
 

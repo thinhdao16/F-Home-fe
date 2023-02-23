@@ -7,7 +7,7 @@ import Chart from '../../components/chart/Chart'
 
 const Home = () => {
   return (
-    <div className="home roww">
+    <div className="home">
         <Sidebar />
         <div className="homeContainer">
           <Navbar />

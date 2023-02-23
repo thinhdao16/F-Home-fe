@@ -8,7 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { googleSignIn, user, accessToken } = UserAuth();
   const [fullName, setFullName] = useState("");
-console.log(user)
+
   useEffect(() => {
     console.log(fullName); // log the updated value of fullName after it has been updated
   }, [fullName]);
@@ -27,15 +27,12 @@ console.log(user)
             body: JSON.stringify({ accessToken: accessToken }),
           }
         );
-
+  
         if (response.ok) {
           const data = await response.json();
           if (data !== undefined) {
-            localStorage.setItem("access_token", data?.data?.user?.fullname);
-            const fullNameFromServer = data?.data?.user?.fullname;
-            console.log(fullNameFromServer);
-            setFullName(fullNameFromServer); 
-            console.log(data)// set the value of fullName
+            localStorage.setItem("access_token", data.token);
+            console.log(data);
             navigate("/home");
           } else {
             console.log("No data returned from server");
@@ -47,14 +44,10 @@ console.log(user)
         console.log("Access token not found");
       }
     } catch (error) {
-      console.log("error", error);
+      console.log("error",error);
     }
   };
-  // render the component with the fullName value
 
-
-
-  
   return (
     <div className="body">
       <h1 id="site-logo">

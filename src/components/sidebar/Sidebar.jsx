@@ -77,19 +77,15 @@ const Sidebar = () => {
             <span>Settings</span>
           </li>
           <p className="title">ACCOUNT</p>
-          <li>
+          <li> 
+            <Link to="profile">
             <PersonIcon className="icon" />
             <span>Profile</span>
+            </Link>
           </li>
           <li>
             <ExitToAppIcon className="icon" />
             <span onClick={handleSignOut}>Logout</span>
-          </li>
-          <li>
-            <Link to="login">
-              <ExitToAppIcon className="icon" />
-              <span>LogIn</span>
-            </Link>
           </li>
         </ul>
       </div>
