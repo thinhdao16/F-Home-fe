@@ -16,15 +16,17 @@ const Login = () => {
         const user = auth.currentUser;
         if (user) {
           const idToken = await user.getIdToken();
+          const body = JSON.stringify({ accessToken: accessToken });
           const response = await fetch(
             "http://178.128.223.115:8080/api/v1/auth/sign-in",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Content-Length": body.length.toString(),
                 Authorization: `Bearer ${idToken}`,
               },
-              body: JSON.stringify({ accessToken: accessToken }),
+              body,
             }
           );
   
@@ -51,7 +53,8 @@ const Login = () => {
     }
   };
   
-  
+  // rest of the component code
+
   
 
   return (
