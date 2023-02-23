@@ -8,16 +8,11 @@ import { auth } from "../../components/context/firebase";
 const Login = () => {
   const navigate = useNavigate();
   const { googleSignIn, user, accessToken } = UserAuth();
-  console.log(user)
-  const [fullName, setFullName] = useState("");
-  useEffect(() => {
-    console.log(fullName); // log the updated value of fullName after it has been updated
-  }, [fullName]);
 
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn();
-      if (accessToken) {
+      if (accessToken !== undefined) { // Thêm điều kiện kiểm tra accessToken
         const user = auth.currentUser;
         if (user) {
           const idToken = await user.getIdToken();
@@ -57,6 +52,7 @@ const Login = () => {
   };
   
   
+  
 
   return (
     <div className="body">
@@ -67,7 +63,7 @@ const Login = () => {
         />
       </h1>
       <div id="wrap-main-content">
-        <div class="identity-tabs">
+        <div className="identity-tabs">
           <a href="/vi/Account/Login">Login</a>
         </div>
         <ul className="list-social-login">
@@ -78,14 +74,14 @@ const Login = () => {
             />
           </li>
         </ul>
-        <div class="wrap-form-field">
-          <div class="form-group group-width-icon">
-            <i class="fa-solid fa-user"></i>
+        <div className="wrap-form-field">
+          <div className="form-group group-width-icon">
+            <i className="fa-solid fa-user"></i>
             <input
               type="email"
-              class="form-control input-validation-error"
+              className="form-control input-validation-error"
               placeholder="Email"
-              autocomplete="off"
+              autoComplete="off"
               data-val="true"
               data-val-required="Password is required"
               id="Password"
@@ -93,14 +89,14 @@ const Login = () => {
             />
           </div>
         </div>
-        <div class="wrap-form-field">
-          <div class="form-group group-width-icon">
-            <i class="fa-solid fa-lock"></i>
+        <div className="wrap-form-field">
+          <div className="form-group group-width-icon">
+            <i className="fa-solid fa-lock"></i>
             <input
               type="password"
-              class="form-control input-validation-error"
+              className="form-control input-validation-error"
               placeholder="Password"
-              autocomplete="off"
+              autoComplete="off"
               data-val="true"
               data-val-required="Password is required"
               id="Password"
@@ -108,8 +104,8 @@ const Login = () => {
             />
           </div>
         </div>
-        <div class="d-grid form-identify">
-          <button class="btn btn-primary" type="button">
+        <div className="d-grid form-identify">
+          <button className="btn btn-primary" type="button">
             Log in
           </button>
           <Link to="/linkto" relative="path" className="change-rtn-home">
