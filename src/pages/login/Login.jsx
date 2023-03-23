@@ -1,118 +1,128 @@
 import "./login.scss";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import GoogleButton from "react-google-button";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../../components/context/AuthContext";
+import { useEffect } from "react";
 import { auth } from "../../components/context/firebase";
+import { DataContext } from "../DataContext";
+import toastr from "cogo-toast";
+import axios from "axios";
+import clientId from "./client_secret_624291541261-vsnpuqvrn48tah5ju43l048ug23a3hre.apps.googleusercontent.com.json";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { googleSignIn, user, accessToken } = UserAuth();
+  const { googleSignIn, user, accessToken } = useContext(DataContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate()
 
   const handleGoogleSignIn = async () => {
     try {
+      setIsLoading(true); // set loading to true before the API call
       await googleSignIn();
-      if (accessToken !== undefined) { // Thêm điều kiện kiểm tra accessToken
+      if (accessToken !== undefined) {
+        // Thêm điều kiện kiểm tra accessToken
         const user = auth.currentUser;
         if (user) {
           const idToken = await user.getIdToken();
-          const body = JSON.stringify({ accessToken: accessToken });
-          const response = await fetch(
-            "http://178.128.223.115:8080/api/v1/auth/sign-in",
+          const accessToken = await user.getIdToken(true);
+          const response = await axios.post(
+            "https://fhome-be.vercel.app/login",
+            { accessToken: accessToken },
             {
-              method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "Content-Length": body.length.toString(),
                 Authorization: `Bearer ${idToken}`,
               },
-              body,
             }
           );
-  
-          if (response.ok) {
-            const data = await response.json();
-            if (data !== undefined) {
-              localStorage.setItem("access_token", data.token);
-              console.log(data);
+          if ((response.status = 200)) {
+            // const data = await response.json();
+            if (
+              response.data.data.user.roleName === "admin"
+            ) {
+              localStorage.setItem(
+                "access_token",
+                JSON.stringify(response.data)
+              );
+              toastr.success("Login successfully", {
+                position: "top-right",
+                heading: "Done",
+              });
               navigate("/home");
+              //         }
             } else {
-              console.log("No data returned from server");
+              toastr.error("please are not admin dont enter", {
+                position: "top-right",
+                heading: "Done",
+              });
             }
           } else {
-            console.log("Response not OK");
+            toastr.error("Response not OK", {
+              position: "top-right",
+              heading: "Done",
+            });
           }
         } else {
-          console.log("User not found");
+          toastr.error("User not found", {
+            position: "top-right",
+            heading: "Done",
+          });
         }
       } else {
-        console.log("Access token not found");
+        toastr.error("Access token not found", {
+          position: "top-right",
+          heading: "Done",
+        });
       }
+      setIsLoading(false); // set loading to false after the API call
     } catch (error) {
-      console.log("error", error);
+      toastr.warn(`please are not admin dont enter`, {
+        position: "top-right",
+        heading: "Done",
+      });
+      setIsLoading(false); // set loading to false after the API call
     }
   };
-  
-  // rest of the component code
 
-  
+  useEffect(() => {
+    const accessTokenString = localStorage.getItem("access_token");
+    let accessToken = null;
+    if (typeof accessTokenString === "string" && accessTokenString !== "") {
+      accessToken = JSON.parse(accessTokenString);
+    }
 
+    const userDataString = localStorage.getItem("user_data");
+    let userData = null;
+    if (typeof userDataString === "string" && userDataString !== "") {
+      userData = JSON.parse(userDataString);
+    }
+
+    if (accessToken && userData && userData.user.roleName === "admin") {
+      navigate("/home");
+    } else {
+      navigate("");
+    }
+  }, [navigate]);
   return (
     <div className="body">
-      <h1 id="site-logo">
-        <img
-          src="https://fuidentity.edunext.vn/images/logo-login-new.png"
-          alt="f-home"
-        />
-      </h1>
       <div id="wrap-main-content">
-        <div className="identity-tabs">
-          <a href="/vi/Account/Login">Login</a>
+        <div class="identity-tabs">
+          <a href="/vi/Account/Login">
+            Login
+          </a>
         </div>
         <ul className="list-social-login">
           <li className="social-login-item">
-            <GoogleButton
-              className="googleButton"
-              onClick={handleGoogleSignIn}
-            />
+            <GoogleButton className="googleButton" onClick={handleGoogleSignIn}
+              data-clientid={clientId.web.client_id}
+              />
           </li>
         </ul>
-        <div className="wrap-form-field">
-          <div className="form-group group-width-icon">
-            <i className="fa-solid fa-user"></i>
-            <input
-              type="email"
-              className="form-control input-validation-error"
-              placeholder="Email"
-              autoComplete="off"
-              data-val="true"
-              data-val-required="Password is required"
-              id="Password"
-              name="Password"
-            />
-          </div>
-        </div>
-        <div className="wrap-form-field">
-          <div className="form-group group-width-icon">
-            <i className="fa-solid fa-lock"></i>
-            <input
-              type="password"
-              className="form-control input-validation-error"
-              placeholder="Password"
-              autoComplete="off"
-              data-val="true"
-              data-val-required="Password is required"
-              id="Password"
-              name="Password"
-            />
-          </div>
-        </div>
-        <div className="d-grid form-identify">
-          <button className="btn btn-primary" type="button">
+        <div class="d-grid form-identify">
+          <button class="btn btn-primary" type="button">
             Log in
           </button>
-          <Link to="/linkto" relative="path" className="change-rtn-home">
-            Return To Home Page
+          <Link to="/linkto" relative = "path"  className="change-rtn-home">
+          Return To Home Page
           </Link>
         </div>
       </div>

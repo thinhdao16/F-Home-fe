@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import React from 'react';
+
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
@@ -11,25 +11,35 @@ import Protected from './components/context/Protected';
 
 function App() {
   return (
-    <React.Fragment>
-    <AuthContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/">
-            {/* <Route path="/home" element={<Protected><Home /></Protected>} />
-            <Route path="/profile" element={<List />} /> */}
-            <Route path='home' >
+    <div className="App">
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/">
+              <Route path='home' >
                 <Route index element={<Protected><Home /></Protected>}/>
-                <Route path='profile' element={<List />} />
               </Route>
-            <Route exact path="" element={<Login />} />
 
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthContextProvider>
-  </React.Fragment>
-  
+              <Route exact path="" element={<Login />} />
+
+              <Route path="users">
+                <Route index element={<Protected>
+                  <List /></Protected>} />
+                <Route path=":userId" element={<Single />} />
+                <Route path="new" element={<New />} />
+              </Route>
+
+              <Route path="products">
+                <Route index element={<List />} />
+                <Route path=":productId" element={<Single />} />
+                <Route path="new" element={<New />} />
+              </Route>
+
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthContextProvider>
+    </div>
   );
 }
 

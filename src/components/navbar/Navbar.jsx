@@ -4,10 +4,8 @@ import LanguageIcon from '@mui/icons-material/Language';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import MessageIcon from '@mui/icons-material/Message';
-import { UserAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { user } = UserAuth()
   return (
     <div className='navbar'>
       <div className="wrapper">
@@ -31,9 +29,7 @@ const Navbar = () => {
             <MessageIcon className='icon' />
             <div className='counter'>2</div>
           </div>
-          <div className="item">
-            <img src={user?.photoURL} alt="user" className='avatar' />
-          </div>
+
         </div>
       </div>
     </div>

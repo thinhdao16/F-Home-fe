@@ -7,11 +7,21 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../context/firebase";
-const AuthContext = createContext();
+import axios from "axios";
+import { DataContext } from "../../pages/DataContext";
+// const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
   const [accessToken, setAccessToken] = useState("");
+  const [buildings, setBuildings] = useState([]);
+  const buildingsData = buildings.data;
+  const [accountStart, setAccountStart] = useState([]);
+  const [posting, setPosting] = useState([]);
+  const [imgPostDraft, setImgPostDraft] = useState(null)
+  const [allCmt, setAllCmt] = useState([])
+  const [isLiked, setIsLiked] = useState([]);
+  const [chooseWant, setChooseWant] = useState([])
   const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -22,43 +32,48 @@ export function AuthContextProvider({ children }) {
   };
   const logOut = () => {
     signOut(auth);
+    localStorage.clear();
+    window.location.reload();
   };
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser && currentUser.email) {
-        if (
-          currentUser.email.endsWith("thinhddse151086@fpt.edu.vn") ||
-          currentUser.email.endsWith("vinhthse151179@fpt.edu.vn") ||
-          currentUser.email.endsWith("tungdmse151168@fpt.edu.vn") ||
-          currentUser.email.endsWith("hungmnhse151102@fpt.edu.vn") ||
-          currentUser.email.endsWith("tuanndse151153@fpt.edu.vn") ||
-          currentUser.email.endsWith("taivtse151030@fpt.edu.vn")
-        ) {
-          currentUser.getIdToken().then((token) => {
-            setAccessToken(token);
-          });
-        } else {
-          logOut();
-          setTimeout(() => {
-            alert("Please you dont admin please dont enter");
-          }, 1000);
-        }
+        currentUser.getIdToken().then((token) => {
+          setAccessToken(token);
+        });
       }
     });
     return () => {
       unsubscribe();
     };
   }, [user]);
-  
+
   return (
-    <AuthContext.Provider value={{ googleSignIn, logOut, user, accessToken }}>
+    <DataContext.Provider
+      value={{
+        googleSignIn,
+        logOut,
+        user,
+        accessToken,
+        buildingsData,
+        posting,
+        setPosting,
+        imgPostDraft,
+        setImgPostDraft,
+        allCmt,
+        setAllCmt,
+        isLiked,
+        setIsLiked,
+        chooseWant,
+        setChooseWant,
+      }}
+    >
       {children}
-    </AuthContext.Provider>
+    </DataContext.Provider>
   );
 }
 
-export const UserAuth = () => {
-  return useContext(AuthContext);
-};
+// export const UserAuth = () => {
+//   return useContext(AuthContext);
+// };

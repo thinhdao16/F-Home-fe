@@ -4,13 +4,14 @@ import Navbar from '../../components/navbar/Navbar'
 import Widget from '../../components/widget/Widget'
 import Feature from '../../components/feature/Feature'
 import Chart from '../../components/chart/Chart'
+import Chart2 from '../../components/chart/Chart_2'
 
 const Home = () => {
   return (
     <div className="home">
         <Sidebar />
         <div className="homeContainer">
-          <Navbar />
+          {/* <Navbar /> */}
           <div className='widgets'>
             <Widget type='users' />
             <Widget type='orders' />
@@ -18,8 +19,9 @@ const Home = () => {
             <Widget type='balance' />
           </div>
           <div className="charts">
-            <Feature />
+            {/* <Feature /> */}
             <Chart />
+            <Chart2 />
           </div>
         </div>
     </div>

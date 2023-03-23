@@ -13,17 +13,18 @@ import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Link } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import { useContext } from "react";
+import { DataContext } from "../../pages/DataContext";
 
 const Sidebar = () => {
-  const { logOut, user } = UserAuth()
+  const { logOut, posting, allCmt, isLiked } = useContext(DataContext);
   const handleSignOut = async () => {
     try {
-      await logOut()
+      await logOut();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    console.log('first', user)
-  }
+  };
   return (
     <div className="sidebar">
       <div className="top">
@@ -37,14 +38,17 @@ const Sidebar = () => {
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
           </li>
-          <p className="title">LISTS MENU</p>
+          {/* <p className="title">LISTS MENU</p>
           <li>
             <GroupIcon className="icon" />
             <span>Users</span>
           </li>
           <li>
+            <Link to = "product">
             <Inventory2Icon className="icon" />
             <span>Products</span>
+            </Link>
+           
           </li>
           <li>
             <ProductionQuantityLimitsIcon className="icon" />
@@ -77,15 +81,15 @@ const Sidebar = () => {
             <span>Settings</span>
           </li>
           <p className="title">ACCOUNT</p>
-          <li> 
-            <Link to="profile">
+          <li>
             <PersonIcon className="icon" />
             <span>Profile</span>
-            </Link>
-          </li>
+          </li> */}
           <li>
             <ExitToAppIcon className="icon" />
             <span onClick={handleSignOut}>Logout</span>
+          </li>
+          <li>
           </li>
         </ul>
       </div>
