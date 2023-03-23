@@ -5,9 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { auth } from "../../components/context/firebase";
 import { DataContext } from "../DataContext";
-import toastr from "cogo-toast";
-import axios from "axios";
+// import toastr from "cogo-toast";
 import clientId from "./client_secret_624291541261-vsnpuqvrn48tah5ju43l048ug23a3hre.apps.googleusercontent.com.json";
+import axios from "axios";
 
 const Login = () => {
   const { googleSignIn, user, accessToken } = useContext(DataContext);
@@ -43,42 +43,42 @@ const Login = () => {
                 "access_token",
                 JSON.stringify(response.data)
               );
-              toastr.success("Login successfully", {
-                position: "top-right",
-                heading: "Done",
-              });
+              // toastr.success("Login successfully", {
+              //   position: "top-right",
+              //   heading: "Done",
+              // });
               navigate("/home");
               //         }
             } else {
-              toastr.error("please are not admin dont enter", {
-                position: "top-right",
-                heading: "Done",
-              });
+              // toastr.error("please are not admin dont enter", {
+              //   position: "top-right",
+              //   heading: "Done",
+              // });
             }
           } else {
-            toastr.error("Response not OK", {
-              position: "top-right",
-              heading: "Done",
-            });
+            // toastr.error("Response not OK", {
+            //   position: "top-right",
+            //   heading: "Done",
+            // });
           }
         } else {
-          toastr.error("User not found", {
-            position: "top-right",
-            heading: "Done",
-          });
+          // toastr.error("User not found", {
+          //   position: "top-right",
+          //   heading: "Done",
+          // });
         }
       } else {
-        toastr.error("Access token not found", {
-          position: "top-right",
-          heading: "Done",
-        });
+        // toastr.error("Access token not found", {
+        //   position: "top-right",
+        //   heading: "Done",
+        // });
       }
       setIsLoading(false); // set loading to false after the API call
     } catch (error) {
-      toastr.warn(`please are not admin dont enter`, {
-        position: "top-right",
-        heading: "Done",
-      });
+      // toastr.warn(`please are not admin dont enter`, {
+      //   position: "top-right",
+      //   heading: "Done",
+      // });
       setIsLoading(false); // set loading to false after the API call
     }
   };
