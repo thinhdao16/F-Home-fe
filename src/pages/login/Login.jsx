@@ -122,7 +122,7 @@ const Login = () => {
             Log in
           </button>
           <Link to="/linkto" relative = "path"  className="change-rtn-home">
-          Return To Home Page
+          Return To HomePage
           </Link>
         </div>
       </div>
