@@ -7,6 +7,7 @@ import Single from "./pages/single/Single";
 import New from "./pages/new/New";
 import { AuthContextProvider } from './components/context/AuthContext';
 import Protected from './components/context/Protected';
+import Sidebar from './components/sidebar/Sidebar';
 
 
 function App() {
@@ -16,23 +17,14 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/">
-              <Route path='home' >
-                <Route index element={<Protected><Home /></Protected>}/>
-              </Route>
-
               <Route exact path="" element={<Login />} />
+              <Route path='/home'>
+                {/* <Route index element={<Protected><Home /></Protected>} /> */}
+                <Route index element={<Protected><Home /></Protected>} />
+                <Route path='users' index element={<Protected><List /></Protected>} />
+                <Route path='products' index element={<Protected><Single /></Protected>} />
+                <Route path='points' index element={<Protected><New /></Protected>} />
 
-              <Route path="users">
-                <Route index element={<Protected>
-                  <List /></Protected>} />
-                <Route path=":userId" element={<Single />} />
-                <Route path="new" element={<New />} />
-              </Route>
-
-              <Route path="products">
-                <Route index element={<List />} />
-                <Route path=":productId" element={<Single />} />
-                <Route path="new" element={<New />} />
               </Route>
 
             </Route>

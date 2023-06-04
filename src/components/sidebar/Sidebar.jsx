@@ -35,21 +35,40 @@ const Sidebar = () => {
         <ul>
           <p className="title">MAIN MENU</p>
           <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
+            <Link to='/home'>
+              <DashboardIcon className="icon" />
+              <span>Dashboard</span>
+            </Link>
           </li>
-          {/* <p className="title">LISTS MENU</p>
+          
+          <p className="title">LISTS MENU</p>
           <li>
+            <Link to="/home/users">
+              <Inventory2Icon className="icon" />
+              <span>Users</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/home/products">
+              <Inventory2Icon className="icon" />
+              <span>Products</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/home/points">
+              <Inventory2Icon className="icon" />
+              <span>Points</span>
+            </Link>
+          </li>
+          <li>
+            <ExitToAppIcon className="icon" />
+            <span onClick={handleSignOut}>Logout</span>
+          </li>
+          {/* <li>
             <GroupIcon className="icon" />
             <span>Users</span>
           </li>
-          <li>
-            <Link to = "product">
-            <Inventory2Icon className="icon" />
-            <span>Products</span>
-            </Link>
-           
-          </li>
+
           <li>
             <ProductionQuantityLimitsIcon className="icon" />
             <span>Orders</span>
@@ -84,13 +103,9 @@ const Sidebar = () => {
           <li>
             <PersonIcon className="icon" />
             <span>Profile</span>
+          </li>
+        
           </li> */}
-          <li>
-            <ExitToAppIcon className="icon" />
-            <span onClick={handleSignOut}>Logout</span>
-          </li>
-          <li>
-          </li>
         </ul>
       </div>
       <div className="bottom">
