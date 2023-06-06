@@ -14,7 +14,6 @@ import axios from 'axios';
 
 const Single = () => {
   const [postings, setPostings] = useState([]);
-
   const arrPostPeding = useMemo(() => {
     if (!postings) return [];
 

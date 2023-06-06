@@ -15,28 +15,18 @@ import axios from 'axios';
 const New = () => {
   const [variant, setVariant] = useState('plain');
   const [color, setColor] = useState('neutral');
-  const [users, setUsers] = useState([]);
   const [pointUser, setPointUser] = useState([])
-  console.log(pointUser)
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
-
-  const arrUsers = useMemo(() => {
-    if (!users) return [];
-    return users?.filter(
-      (users) => users.status === false
-    );
-  }, [users]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/getformpoint',
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userPosting.data.accessToken}`,
-            },
-          });
+        const response = await axios.get('http://localhost:3000/getformpoint', {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userPosting.data.accessToken}`,
+          },
+        });
         const data = response?.data?.data?.point;
         setPointUser(data);
       } catch (error) {
@@ -46,6 +36,7 @@ const New = () => {
 
     fetchUsers();
   }, []);
+
   const handlePublish = (event, point, id, pointId) => {
     event.preventDefault();
     console.log(pointId)
@@ -61,19 +52,43 @@ const New = () => {
           }
         })
         .then((response) => {
-          console.log(response.data);
-          // Cập nhật state để render lại component
-          // setPostings((prevData) => {
-          //   const updatedData = prevData.filter((item) => item._id !== id);
-          //   return updatedData;
-          // });
+          // Update the state to render the component again
+          setPointUser((prevData) => {
+            const updatedData = prevData.filter((item) => item._id === id);
+            return updatedData;
+          });
         })
         .catch((error) => {
           console.error(error);
         });
     }
   };
-  
+
+
+  const handleApproved = (id) => {
+    fetch(`http://localhost:3000/deleteformpoint/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userPosting.data.accessToken}`,
+      },
+      body: JSON.stringify({
+        status: "approved"
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        // update state to re-render the component
+        setPointUser((prevData) => {
+          const updatedData = prevData.filter((item) => item._id === id);
+          return updatedData;
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div className='home'>
       <Sidebar />
@@ -148,11 +163,17 @@ const New = () => {
                         <button
                           type="button"
                           className="btn btn-primary btn-sm"
-                          onClick={(event) => handlePublish(event, row?.point,row?.user?._id, row?._id )}
+                          onClick={(event) => handlePublish(event, row?.point, row?.user?._id, row?._id)}
                         >
                           Welcome
                         </button>
-
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleApproved(row?._id)}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}
