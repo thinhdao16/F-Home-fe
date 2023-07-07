@@ -15,7 +15,9 @@ import { Link } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { useContext } from "react";
 import { DataContext } from "../../pages/DataContext";
-
+import { Dropdown, Space } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { MenuProps } from "antd";
 const Sidebar = () => {
   const { logOut, posting, allCmt, isLiked } = useContext(DataContext);
   const handleSignOut = async () => {
@@ -25,6 +27,36 @@ const Sidebar = () => {
       console.log(error);
     }
   };
+  const items = [
+    {
+      label: (
+        <Link to="/home/points">
+          <Inventory2Icon className="icon" />
+          <span>Transaction</span>
+        </Link>
+      ),
+      key: "0",
+    },
+    {
+      label: (
+        <Link to="/home/transApps">
+          <Inventory2Icon className="icon" />
+          <span>Approved</span>
+        </Link>
+      ),
+      key: "1",
+    },
+    {
+      label: (
+        <Link to="/home/transRes">
+          <Inventory2Icon className="icon" />
+          <span>Rejected</span>
+        </Link>
+      ),
+        key :"2",
+    },
+  ];
+
   return (
     <div className="sidebar">
       <div className="top">
@@ -35,12 +67,12 @@ const Sidebar = () => {
         <ul>
           <p className="title">MAIN MENU</p>
           <li>
-            <Link to='/home'>
+            <Link to="/home">
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
             </Link>
           </li>
-          
+
           <p className="title">LISTS MENU</p>
           <li>
             <Link to="/home/users">
@@ -55,57 +87,20 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/home/points">
-              <Inventory2Icon className="icon" />
-              <span>Points</span>
-            </Link>
+            <Inventory2Icon className="icon" />
+            <Dropdown menu={{ items }} trigger={["click"]}>
+              <a onClick={(e) => e.preventDefault()}>
+                <span>
+                  Point
+                  <DownOutlined />
+                </span>
+              </a>
+            </Dropdown>
           </li>
           <li>
             <ExitToAppIcon className="icon" />
             <span onClick={handleSignOut}>Logout</span>
           </li>
-          {/* <li>
-            <GroupIcon className="icon" />
-            <span>Users</span>
-          </li>
-
-          <li>
-            <ProductionQuantityLimitsIcon className="icon" />
-            <span>Orders</span>
-          </li>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">OTHER MENU</p>
-          <li>
-            <QueryStatsIcon className="icon" />
-            <span>Status</span>
-          </li>
-          <li>
-            <NotificationsIcon className="icon" />
-            <span>Notifications</span>
-          </li>
-          <p className="title">SERVICES</p>
-          <li>
-            <HealthAndSafetyIcon className="icon" />
-            <span>System Health</span>
-          </li>
-          <li>
-            <PsychologyIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsIcon className="icon" />
-            <span>Settings</span>
-          </li>
-          <p className="title">ACCOUNT</p>
-          <li>
-            <PersonIcon className="icon" />
-            <span>Profile</span>
-          </li>
-        
-          </li> */}
         </ul>
       </div>
       <div className="bottom">

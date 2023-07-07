@@ -1,6 +1,6 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useMemo, useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
-import "./new.scss";
 // import { VariantProp, ColorPaletteProp } from '@mui/joy/styles';
 import Box from "@mui/joy/Box";
 import FormControl from "@mui/joy/FormControl";
@@ -11,13 +11,21 @@ import RadioGroup from "@mui/joy/RadioGroup";
 import Radio from "@mui/joy/Radio";
 import Table from "@mui/joy/Table";
 import axios from "axios";
+import { Tag } from "antd";
 
-const New = () => {
+const TranstionApproved = () => {
   const [variant, setVariant] = useState("plain");
   const [color, setColor] = useState("neutral");
   const [pointUser, setPointUser] = useState([]);
+  console.log(pointUser)
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
+  const calculateTotalPoint = () => {
+    return pointUser.reduce((total, item) => total + (item.point || 0), 0);
+  };
 
+  // Ví dụ về cách sử dụng hàm tính tổng
+  const totalPoint = calculateTotalPoint();
+  console.log(totalPoint)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -37,75 +45,15 @@ const New = () => {
     fetchUsers();
   }, []);
 
-  const handlePublish = (event, point, id, pointId) => {
-    event.preventDefault();
-    console.log(pointId);
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      axios
-        .put(
-          `http://localhost:3000/pointplus/${id}`,
-          {
-            point: point,
-            pointId: pointId,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userPosting.data.accessToken}`,
-            },
-          }
-        )
-        .then((response) => {
-          // Update the state to render the component again
-          setPointUser((prevData) => {
-            const updatedData = prevData.filter((item) => item._id === id);
-            return updatedData;
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
-
-  const handleApproved = (id) => {
-    fetch(`http://localhost:3000/rejectedPoint/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userPosting.data.accessToken}`,
-      },
-      body: JSON.stringify({
-        status: "rejected",
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        setPointUser((prevData) => {
-          const updatedData = prevData.map((item) => {
-            if (item._id === id) {
-              item.status = "rejected";
-            }
-            return item;
-          });
-          return updatedData;
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
   const pointUserPending = useMemo(() => {
     if (!pointUser) return [];
-    return pointUser?.filter(
-      (point) => point.status === "pending"
-    );
+    return pointUser?.filter((point) => point.status === "approved");
   }, [pointUser]);
   return (
     <div className="home">
       <Sidebar />
       <div className="homeContainer">
-        <div className = " homeContainer-trans-point">
+        <div className=" homeContainer-trans-point">
           <Box
             sx={{
               display: "flex",
@@ -159,7 +107,7 @@ const New = () => {
                 <th>Name</th>
                 <th>Point</th>
                 <th>Transfer Contents</th>
-                <th>Sure</th>
+                <th>Progess</th>
               </tr>
             </thead>
             <tbody>
@@ -189,27 +137,8 @@ const New = () => {
                       <td>{row?.point}</td>
                       <td>{row?.user?.email}</td>
                       <td>
-                        <button
-                          type="button"
-                          className="btn btn-primary btn-sm"
-                          onClick={(event) =>
-                            handlePublish(
-                              event,
-                              row?.point,
-                              row?.user?._id,
-                              row?._id
-                            )
-                          }
-                        >
-                          Welcome
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleApproved(row?._id)}
-                        >
-                          Delete
-                        </button>
+                        {" "}
+                        <Tag color="green">Approved</Tag>
                       </td>
                     </tr>
                   ))}
@@ -221,4 +150,4 @@ const New = () => {
   );
 };
 
-export default New;
+export default TranstionApproved;

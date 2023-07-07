@@ -61,21 +61,21 @@ const mostSub = filterDataPostByMonthNow(dataUser)
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
   const fetchPosts = async () => {
     try {
-      const responsePost = await axios.get("https://f-home-be.vercel.app/posts", {
+      const responsePost = await axios.get("http://localhost:3000/posts", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPost(responsePost.data.data.postings);
-      const responsePostLike = await axios.get("https://f-home-be.vercel.app/getAllFavourite", {
+      const responsePostLike = await axios.get("http://localhost:3000/getAllFavourite", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPostLike(responsePostLike?.data?.data?.favourite);
-      const response = await axios.get("https://f-home-be.vercel.app/getAllUsers", {
+      const response = await axios.get("http://localhost:3000/getAllUsers", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,

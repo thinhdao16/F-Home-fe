@@ -30,21 +30,21 @@ const arrPostPublish = useMemo(() => {
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
   const fetchPosts = async () => {
     try {
-      const responsePost = await axios.get("https://f-home-be.vercel.app/posts", {
+      const responsePost = await axios.get("http://localhost:3000/posts", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPost(responsePost?.data?.data?.postings);
-      const responsePostLike = await axios.get("https://f-home-be.vercel.app/getAllFavourite", {
+      const responsePostLike = await axios.get("http://localhost:3000/getAllFavourite", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPostLike(responsePostLike?.data?.data?.favourite);
-      const responsePostCMT = await axios.get("https://f-home-be.vercel.app/allComment", {
+      const responsePostCMT = await axios.get("http://localhost:3000/allComment", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
@@ -100,7 +100,7 @@ const arrPostPublish = useMemo(() => {
 
   return (
     <div className="chart">
-      <div className="title"onClick={handleRefresh}>Last 2 Months Revenue</div>
+      <div className="title"onClick={handleRefresh}>Last 2 Months Post</div>
       <ResponsiveContainer width="100%" aspect={2 / 1}>
         <AreaChart
           width={"100%"}

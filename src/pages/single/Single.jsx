@@ -28,7 +28,7 @@ const Single = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://f-home-be.vercel.app/posts',
+        const response = await axios.get('http://localhost:3000/posts',
           {
             headers: {
               "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const Single = () => {
   }, []);
 
   const handleApproved = (id) => {
-    fetch(`https://f-home-be.vercel.app/posts/setapprove/${id}`, {
+    fetch(`http://localhost:3000/posts/setapprove/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const Single = () => {
   const handlePublish = (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       console.log(id)
-      fetch(`https://f-home-be.vercel.app/posts/setapprovepublish/${id}`, {
+      fetch(`http://localhost:3000/posts/setapprovepublish/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const Single = () => {
       <div className='home'>
         <Sidebar />
         <div className="homeContainer">
-          <div>
+        <div className = " homeContainer-trans-point">
             <Box
               sx={{
                 display: 'flex',

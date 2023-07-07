@@ -1,34 +1,32 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import Sidebar from '../../components/sidebar/Sidebar';
-import './list.scss';
+import React, { useEffect, useMemo, useState } from "react";
+import Sidebar from "../../components/sidebar/Sidebar";
+import "./list.scss";
 // import { VariantProp, ColorPaletteProp } from '@mui/joy/styles';
-import Box from '@mui/joy/Box';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
-import RadioGroup from '@mui/joy/RadioGroup';
-import Radio from '@mui/joy/Radio';
-import Table from '@mui/joy/Table';
-import axios from 'axios';
+import Box from "@mui/joy/Box";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import RadioGroup from "@mui/joy/RadioGroup";
+import Radio from "@mui/joy/Radio";
+import Table from "@mui/joy/Table";
+import axios from "axios";
 
 const List = () => {
   const [users, setUsers] = useState([]);
 
   const arrUsers = useMemo(() => {
     if (!users) return [];
-    return users?.filter(
-      (users) => users.status === false
-    );
+    return users?.filter((users) => users.status === false);
   }, [users]);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://f-home-be.vercel.app/getAllUsers');
+        const response = await axios.get("http://localhost:3000/getAllUsers");
         const data = response.data;
         setUsers(data);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error("Error fetching users:", error);
       }
     };
 
@@ -36,14 +34,14 @@ const List = () => {
   }, []);
 
   const handlePutUser = (id) => {
-    fetch(`https://f-home-be.vercel.app/setUserStatus/${id}`, {
-      method: 'PUT',
+    fetch(`http://localhost:3000/setUserStatus/${id}`, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         status: true,
-        roleName: 'landlord',
+        roleName: "landlord",
       }),
     })
       .then((res) => res.json())
@@ -60,9 +58,9 @@ const List = () => {
   };
 
   const handleDeleteUser = (id) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
-      fetch(`https://f-home-be.vercel.app/deleteUser/${id}`, {
-        method: 'DELETE',
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      fetch(`http://localhost:3000/deleteUser/${id}`, {
+        method: "DELETE",
       })
         .then((res) => res.json())
         .then((result) => {
@@ -77,20 +75,20 @@ const List = () => {
         });
     }
   };
-  const [variant, setVariant] = useState('plain');
-  const [color, setColor] = useState('neutral');
+  const [variant, setVariant] = useState("plain");
+  const [color, setColor] = useState("neutral");
   return (
     <>
-      <div className='home'>
+      <div className="home">
         <Sidebar />
         <div className="homeContainer">
-          <div>
+          <div className=" homeContainer-trans-point">
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
                 gap: 1,
                 mb: 2,
                 ml: 1,
@@ -116,13 +114,18 @@ const List = () => {
                   value={color}
                   onChange={(event) => setColor(event.target.value)}
                 >
-                  {['neutral', 'primary', 'danger', 'info', 'success', 'warning'].map(
-                    (item) => (
-                      <Option key={item} value={item}>
-                        {item}
-                      </Option>
-                    ),
-                  )}
+                  {[
+                    "neutral",
+                    "primary",
+                    "danger",
+                    "info",
+                    "success",
+                    "warning",
+                  ].map((item) => (
+                    <Option key={item} value={item}>
+                      {item}
+                    </Option>
+                  ))}
                 </Select>
               </FormControl>
             </Box>
@@ -131,7 +134,7 @@ const List = () => {
                 <tr>
                   <th>Image</th>
                   <th>Name</th>
-                  <th >Email</th>
+                  <th>Email</th>
                   <th>PhoneNumber</th>
                   <th>Sure</th>
                 </tr>
@@ -144,9 +147,21 @@ const List = () => {
                         new Date(b?.updatedAt).getTime() -
                         new Date(a?.updatedAt).getTime()
                       );
-                    })?.map((row) => (
+                    })
+                    ?.map((row) => (
                       <tr key={row?.fullname}>
-                        <td><img src={row?.img} style={{ width: 60, height: 60, objectFit: 'cover', border: 'none', borderRadius: '50%' }} /></td>
+                        <td>
+                          <img
+                            src={row?.img}
+                            style={{
+                              width: 60,
+                              height: 60,
+                              objectFit: "cover",
+                              border: "none",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </td>
                         <td>{row?.fullname}</td>
                         <td>{row?.email}</td>
                         <td>{row?.phoneNumber}</td>
