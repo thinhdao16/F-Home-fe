@@ -21,7 +21,7 @@ const New = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/getformpoint", {
+        const response = await axios.get("https://f-home-be.vercel.app/getformpoint", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userPosting.data.accessToken}`,
@@ -43,7 +43,7 @@ const New = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       axios
         .put(
-          `http://localhost:3000/pointplus/${id}`,
+          `https://f-home-be.vercel.app/pointplus/${id}`,
           {
             point: point,
             pointId: pointId,
@@ -69,7 +69,7 @@ const New = () => {
   };
 
   const handleApproved = (id) => {
-    fetch(`http://localhost:3000/rejectedPoint/${id}`, {
+    fetch(`https://f-home-be.vercel.app/rejectedPoint/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

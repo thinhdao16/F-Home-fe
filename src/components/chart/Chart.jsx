@@ -30,7 +30,7 @@ const arrPostFil = useMemo(() => {
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getAllUsers", {
+      const response = await axios.get("https://f-home-be.vercel.app/getAllUsers", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
@@ -38,7 +38,7 @@ const arrPostFil = useMemo(() => {
       });
       setDataUser(response.data);
 
-      const responsePost = await axios.get("http://localhost:3000/posts", {
+      const responsePost = await axios.get("https://f-home-be.vercel.app/posts", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,

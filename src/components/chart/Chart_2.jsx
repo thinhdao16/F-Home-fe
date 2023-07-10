@@ -30,21 +30,21 @@ const arrPostPublish = useMemo(() => {
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
   const fetchPosts = async () => {
     try {
-      const responsePost = await axios.get("http://localhost:3000/posts", {
+      const responsePost = await axios.get("https://f-home-be.vercel.app/posts", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPost(responsePost?.data?.data?.postings);
-      const responsePostLike = await axios.get("http://localhost:3000/getAllFavourite", {
+      const responsePostLike = await axios.get("https://f-home-be.vercel.app/getAllFavourite", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPostLike(responsePostLike?.data?.data?.favourite);
-      const responsePostCMT = await axios.get("http://localhost:3000/allComment", {
+      const responsePostCMT = await axios.get("https://f-home-be.vercel.app/allComment", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
