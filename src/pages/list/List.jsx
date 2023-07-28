@@ -13,53 +13,87 @@ import Table from "@mui/joy/Table";
 import axios from "axios";
 
 const List = () => {
-  const [users, setUsers] = useState([]);
+  const [] = useState([]);
 
+  const [users, setUsers] = useState({
+    userss: [],
+  });
   const arrUsers = useMemo(() => {
     if (!users) return [];
-    return users?.filter((users) => users.status === false);
+    return users?.userss?.filter((users) => users.status === false);
   }, [users]);
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const response = await axios.get("https://f-home-be.vercel.app/getAllUsers");
-        const data = response.data;
-        setUsers(data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
+      const responses = await Promise.all([
+        axios.get("http://localhost:3000/getAllUsers"),
+        axios.get("http://localhost:3000/getformpointEmail"),
+      ]);
+      const userss = responses[0].data;
+      const pointWait = responses[1].data.data.point;
+      const newData = userss.map((users) => {
+        const points = pointWait.find((b) => b.email === users.email);
+        const pointEmailImg = points ? points.img : "";
+        const pointtDescription = points ? points.script : "";
+        const pointPlus = points ? points.point : "";
+        const pointId = points ? points._id : "";
+        return {
+          ...users,
+          pointEmailImg,
+          pointtDescription,
+          pointPlus,
+          pointId
+        };
+      });
+      setUsers({
+        userss: newData,
+      });
     };
 
     fetchUsers();
   }, []);
 
+
   const handlePutUser = (id) => {
-    fetch(`https://f-home-be.vercel.app/setUserStatus/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    console.log(id);
+    axios
+      .put(`http://localhost:3000/setUserStatus/${id?._id}`, {
         status: true,
         roleName: "landlord",
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        // update state to re-render the component
-        setUsers((prevData) => {
-          const updatedData = prevData.filter((item) => item._id !== id);
-          return updatedData;
-        });
+      })
+      .then((response) => {
+        // Assuming the response.data contains the updated data after the PUT request
+        // Update state to re-render the component
+      
+        axios
+          .put(
+            "http://localhost:3000/pointplusEmail",
+            {
+              email: id?.email,
+              point: id?.pointPlus,
+              pointId: id?.pointId,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((secondResponse) => {
+            // Handle the response of the second API call here
+            // You can perform any additional actions based on the second API response
+          })
+          .catch((secondError) => {
+            console.error(secondError);
+          });
       })
       .catch((error) => {
         console.error(error);
       });
   };
-
+  
   const handleDeleteUser = (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      fetch(`https://f-home-be.vercel.app/deleteUser/${id}`, {
+      fetch(`http://localhost:3000/deleteUser/${id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
@@ -135,7 +169,8 @@ const List = () => {
                   <th>Image</th>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>PhoneNumber</th>
+                  <th>Point</th>
+                  <th>Transaction</th>
                   <th>Sure</th>
                 </tr>
               </thead>
@@ -153,6 +188,7 @@ const List = () => {
                         <td>
                           <img
                             src={row?.img}
+                            alt=""
                             style={{
                               width: 60,
                               height: 60,
@@ -164,21 +200,32 @@ const List = () => {
                         </td>
                         <td>{row?.fullname}</td>
                         <td>{row?.email}</td>
-                        <td>{row?.phoneNumber}</td>
+                        <td>{row?.pointPlus}</td>
+                        <img
+                          src={row?.pointEmailImg}
+                          alt=""
+                          style={{
+                            width: 60,
+                            height: 60,
+                            objectFit: "cover",
+                            border: "none",
+                            borderRadius: "50%",
+                          }}
+                        />
                         <td>
                           <button
                             type="button"
                             className="btn btn-primary btn-sm"
-                            onClick={() => handlePutUser(row?._id)}
+                            onClick={() => handlePutUser(row)}
                           >
-                            Welcome
+                            Yes
                           </button>{" "}
                           <button
                             type="button"
                             className="btn btn-danger btn-sm"
                             onClick={() => handleDeleteUser(row?._id)}
                           >
-                            Delete
+                            No
                           </button>
                         </td>
                       </tr>

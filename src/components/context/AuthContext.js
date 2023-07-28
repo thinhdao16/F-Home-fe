@@ -22,6 +22,8 @@ export function AuthContextProvider({ children }) {
   const [allCmt, setAllCmt] = useState([])
   const [isLiked, setIsLiked] = useState([]);
   const [chooseWant, setChooseWant] = useState([])
+  const [dataUser, setDataUser] = useState([]);
+
   const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -67,6 +69,7 @@ export function AuthContextProvider({ children }) {
         setIsLiked,
         chooseWant,
         setChooseWant,
+        dataUser, setDataUser
       }}
     >
       {children}

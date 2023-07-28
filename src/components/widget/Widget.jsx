@@ -5,16 +5,17 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import axios from "axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
+import { DataContext } from "../../pages/DataContext";
 
 const Widget = ({ type }) => {
   let data;
 
   const[dataPostLike , setDataPostLike] = useState([])
   const [dataPost, setDataPost] = useState([]);
-  const [dataUser, setDataUser] = useState([]);
+  const {dataUser, setDataUser} = useContext(DataContext)
 
   const arrPostPublish = useMemo(() => {
     if (!dataPost) return [];
@@ -39,9 +40,11 @@ const Widget = ({ type }) => {
   }, {});
   const sortedKeys1 = Object.keys(count1).sort((a, b) => count1[b] - count1[a]);
   const mostFrequentUserId1 = sortedKeys1[0];
+  
   const filteredDataIntMost = dataPostLike.filter(
     (obj) => obj?.user?._id === mostFrequentUserId1
   );
+
 
   const filterDataPostByMonthNow = (data) => {
     const currentDate = new Date();
@@ -57,25 +60,25 @@ const Widget = ({ type }) => {
   };
   
 const mostSub = filterDataPostByMonthNow(dataUser)
-  const [refresh, setRefresh] = useState(false); // thêm state để xác định trạng thái của nút "Làm mới"
+  const [refresh, setRefresh] = useState(false); 
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
   const fetchPosts = async () => {
     try {
-      const responsePost = await axios.get("https://f-home-be.vercel.app/posts", {
+      const responsePost = await axios.get("http://localhost:3000/posts", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPost(responsePost.data.data.postings);
-      const responsePostLike = await axios.get("https://f-home-be.vercel.app/getAllFavourite", {
+      const responsePostLike = await axios.get("http://localhost:3000/getAllFavourite", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
         },
       });
       setDataPostLike(responsePostLike?.data?.data?.favourite);
-      const response = await axios.get("https://f-home-be.vercel.app/getAllUsers", {
+      const response = await axios.get("http://localhost:3000/getAllUsers", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
@@ -86,7 +89,16 @@ const mostSub = filterDataPostByMonthNow(dataUser)
       console.log(error);
     }
   };
-
+  const sumPoints = (data) => {
+    if (!Array.isArray(data)) {
+      return 0; 
+    }
+  
+    return data.reduce((total, item) => total + (item.point || 0), 0);
+  };
+  
+  const totalPoints = sumPoints(dataUser);
+  
   useEffect(() => {
     fetchPosts();
   }, [refresh]); // thêm refresh vào dependency array để khi giá trị của refresh thay đổi thì useEffect sẽ chạy lại
@@ -168,7 +180,7 @@ const mostSub = filterDataPostByMonthNow(dataUser)
             }}
           />
         ),
-        textName:  arrPostPublish?.length
+        textName: totalPoints
       };
       break;
     default:

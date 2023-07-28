@@ -9,13 +9,16 @@ import {
   ResponsiveContainer,
   Bar,
 } from "recharts";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useMemo } from "react";
+import { DataContext } from "../../pages/DataContext";
 
 const Chart = ({ users }) => {
-  const [dataUser, setDataUser] = useState([]);
-  // console.log(dataUser)
+  const {dataUser, setDataUser} = useContext(DataContext)
+
+
+
 const[dataPost , setDataPost] = useState([])
 const arrPostFil = useMemo(() => {
   if (!dataUser) return [];
@@ -30,15 +33,7 @@ const arrPostFil = useMemo(() => {
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("https://f-home-be.vercel.app/getAllUsers", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userPosting.data.accessToken}`,
-        },
-      });
-      setDataUser(response.data);
-
-      const responsePost = await axios.get("https://f-home-be.vercel.app/posts", {
+      const responsePost = await axios.get("http://localhost:3000/posts", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userPosting.data.accessToken}`,
@@ -81,8 +76,8 @@ const arrPostFil = useMemo(() => {
     });
   };
   
-  const filteredData2 = filterDataByMonth(arrPostFil, 1);
-  const filteredData3 = filterDataByMonth(arrPostFil, 2);
+  const filteredData2 = filterDataByMonth(arrPostFil, 5);
+  const filteredData3 = filterDataByMonth(arrPostFil, 6);
 
   const filteredDataPostDM1 = filterDataPostByMonth(dataPost, 1,15);
   const filteredDataPostDM2 = filterDataPostByMonth(dataPost, 1,16);
@@ -126,11 +121,9 @@ const arrPostFil = useMemo(() => {
   const data = [
     { name: "" , total:""},
     // { name: "January", total: filteredData1?.length },
-    { name: "February", total: filteredData2?.length },
-    { name: "March", total: filteredData3?.length },
+    { name: "June", total: filteredData2?.length },
+    { name: "July", total: filteredData3?.length },
   ];
-
-
   const dataPostDMChart = [
     { name: "" , total:""},
     { name: "15/2", total: filteredDataPostDM1?.length },

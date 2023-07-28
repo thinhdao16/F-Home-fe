@@ -25,7 +25,7 @@ const Login = () => {
           const idToken = await user.getIdToken();
           const accessToken = await user.getIdToken(true);
           const response = await axios.post(
-            "https://f-home-be.vercel.app/login",
+            "http://localhost:3000/login",
             { accessToken: accessToken },
             {
               headers: {

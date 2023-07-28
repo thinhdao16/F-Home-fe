@@ -21,7 +21,7 @@ const New = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://f-home-be.vercel.app/getformpoint", {
+        const response = await axios.get("http://localhost:3000/getformpoint", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userPosting.data.accessToken}`,
@@ -43,7 +43,7 @@ const New = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       axios
         .put(
-          `https://f-home-be.vercel.app/pointplus/${id}`,
+          `http://localhost:3000/pointplus/${id}`,
           {
             point: point,
             pointId: pointId,
@@ -69,7 +69,7 @@ const New = () => {
   };
 
   const handleApproved = (id) => {
-    fetch(`https://f-home-be.vercel.app/rejectedPoint/${id}`, {
+    fetch(`http://localhost:3000/rejectedPoint/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -101,6 +101,7 @@ const New = () => {
       (point) => point.status === "pending"
     );
   }, [pointUser]);
+  console.log(pointUserPending)
   return (
     <div className="home">
       <Sidebar />
@@ -158,6 +159,7 @@ const New = () => {
                 <th>Image</th>
                 <th>Name</th>
                 <th>Point</th>
+                <th>ImgTrans</th>
                 <th>Transfer Contents</th>
                 <th>Sure</th>
               </tr>
@@ -183,11 +185,23 @@ const New = () => {
                             border: "none",
                             borderRadius: "50%",
                           }}
+                          alt=""
                         />
                       </td>
                       <td>{row?.user?.fullname}</td>
                       <td>{row?.point}</td>
-                      <td>{row?.user?.email}</td>
+                      <img
+                          src={row?.img}
+                          style={{
+                            width: 60,
+                            height: 60,
+                            objectFit: "cover",
+                            border: "none",
+                            borderRadius: "50%",
+                          }}
+                          alt=""
+                        />
+                      <td>{row?.script}</td>
                       <td>
                         <button
                           type="button"
