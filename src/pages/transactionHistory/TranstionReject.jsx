@@ -21,7 +21,7 @@ const TranstionReject = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/getformpoint", {
+        const response = await axios.get("https://f-home-be.vercel.app/getformpoint", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userPosting.data.accessToken}`,

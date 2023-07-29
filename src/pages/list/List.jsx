@@ -25,8 +25,8 @@ const List = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const responses = await Promise.all([
-        axios.get("http://localhost:3000/getAllUsers"),
-        axios.get("http://localhost:3000/getformpointEmail"),
+        axios.get("https://f-home-be.vercel.app/getAllUsers"),
+        axios.get("https://f-home-be.vercel.app/getformpointEmail"),
       ]);
       const userss = responses[0].data;
       const pointWait = responses[1].data.data.point;
@@ -56,7 +56,7 @@ const List = () => {
   const handlePutUser = (id) => {
     console.log(id);
     axios
-      .put(`http://localhost:3000/setUserStatus/${id?._id}`, {
+      .put(`https://f-home-be.vercel.app/setUserStatus/${id?._id}`, {
         status: true,
         roleName: "landlord",
       })
@@ -66,7 +66,7 @@ const List = () => {
       
         axios
           .put(
-            "http://localhost:3000/pointplusEmail",
+            "https://f-home-be.vercel.app/pointplusEmail",
             {
               email: id?.email,
               point: id?.pointPlus,
@@ -93,7 +93,7 @@ const List = () => {
   
   const handleDeleteUser = (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      fetch(`http://localhost:3000/deleteUser/${id}`, {
+      fetch(`https://f-home-be.vercel.app/deleteUser/${id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
