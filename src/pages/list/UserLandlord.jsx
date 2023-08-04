@@ -13,27 +13,26 @@ import Table from "@mui/joy/Table";
 import axios from "axios";
 import { Tag } from "antd";
 
-const TranstionApproved = () => {
+const UserLandlord = () => {
   const [variant, setVariant] = useState("plain");
   const [color, setColor] = useState("neutral");
   const [pointUser, setPointUser] = useState([]);
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
-  const calculateTotalPoint = () => {
-    return pointUser.reduce((total, item) => total + (item.point || 0), 0);
-  };
 
   // Ví dụ về cách sử dụng hàm tính tổng
-  const totalPoint = calculateTotalPoint();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://f-home-be.vercel.app/getformpoint", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userPosting.data.accessToken}`,
-          },
-        });
-        const data = response?.data?.data?.point;
+        const response = await axios.get(
+          "https://f-home-be.vercel.app/getAllUsers",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userPosting.data.accessToken}`,
+            },
+          }
+        );
+        const data = response?.data;
         setPointUser(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -45,9 +44,9 @@ const TranstionApproved = () => {
 
   const pointUserPending = useMemo(() => {
     if (!pointUser) return [];
-    return pointUser?.filter((point) => point.status === "approved");
+    return pointUser?.filter((point) => point.roleName === "landlord" && point.status === true);
   }, [pointUser]);
-  console.log(pointUserPending)
+  console.log(pointUserPending);
   return (
     <div className="home">
       <Sidebar />
@@ -104,9 +103,8 @@ const TranstionApproved = () => {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Email</th>
                 <th>Point</th>
-                <th>ImgTrans</th>
-                <th>Transfer Contents</th>
                 <th>Progess</th>
               </tr>
             </thead>
@@ -123,19 +121,6 @@ const TranstionApproved = () => {
                     <tr key={row?.fullname}>
                       <td>
                         <img
-                          src={row?.user?.img}
-                          style={{
-                            width: 60,
-                            height: 60,
-                            objectFit: "cover",
-                            border: "none",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </td>
-                      <td>{row?.user?.fullname}</td>
-                      <td>{row?.point}</td>
-                      <img
                           src={row?.img}
                           style={{
                             width: 60,
@@ -145,7 +130,10 @@ const TranstionApproved = () => {
                             borderRadius: "50%",
                           }}
                         />
-                      <td>{row?.script}</td>
+                      </td>
+                      <td>{row?.fullname}</td>
+                      <td>{row?.email}</td>
+                      <td>{row?.point}</td>
                       <td>
                         {" "}
                         <Tag color="green">Approved</Tag>
@@ -160,4 +148,4 @@ const TranstionApproved = () => {
   );
 };
 
-export default TranstionApproved;
+export default UserLandlord;

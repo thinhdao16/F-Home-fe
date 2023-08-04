@@ -16,17 +16,21 @@ const New = () => {
   const [variant, setVariant] = useState("plain");
   const [color, setColor] = useState("neutral");
   const [pointUser, setPointUser] = useState([]);
+  const [loader, setLoader] = useState(null);
   const userPosting = JSON.parse(localStorage.getItem("access_token"));
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://f-home-be.vercel.app/getformpoint", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userPosting.data.accessToken}`,
-          },
-        });
+        const response = await axios.get(
+          "https://f-home-be.vercel.app/getformpoint",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userPosting.data.accessToken}`,
+            },
+          }
+        );
         const data = response?.data?.data?.point;
         setPointUser(data);
       } catch (error) {
@@ -35,7 +39,7 @@ const New = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [loader]);
 
   const handlePublish = (event, point, id, pointId) => {
     event.preventDefault();
@@ -57,10 +61,7 @@ const New = () => {
         )
         .then((response) => {
           // Update the state to render the component again
-          setPointUser((prevData) => {
-            const updatedData = prevData.filter((item) => item._id === id);
-            return updatedData;
-          });
+          setLoader((prevData) => !prevData);
         })
         .catch((error) => {
           console.error(error);
@@ -81,15 +82,7 @@ const New = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        setPointUser((prevData) => {
-          const updatedData = prevData.map((item) => {
-            if (item._id === id) {
-              item.status = "rejected";
-            }
-            return item;
-          });
-          return updatedData;
-        });
+        setLoader((prevData) => !prevData);
       })
       .catch((error) => {
         console.error(error);
@@ -97,16 +90,14 @@ const New = () => {
   };
   const pointUserPending = useMemo(() => {
     if (!pointUser) return [];
-    return pointUser?.filter(
-      (point) => point.status === "pending"
-    );
+    return pointUser?.filter((point) => point.status === "pending");
   }, [pointUser]);
-  console.log(pointUserPending)
+  console.log(pointUserPending);
   return (
     <div className="home">
       <Sidebar />
       <div className="homeContainer">
-        <div className = " homeContainer-trans-point">
+        <div className=" homeContainer-trans-point">
           <Box
             sx={{
               display: "flex",
@@ -191,16 +182,16 @@ const New = () => {
                       <td>{row?.user?.fullname}</td>
                       <td>{row?.point}</td>
                       <img
-                          src={row?.img}
-                          style={{
-                            width: 60,
-                            height: 60,
-                            objectFit: "cover",
-                            border: "none",
-                            borderRadius: "50%",
-                          }}
-                          alt=""
-                        />
+                        src={row?.img}
+                        style={{
+                          width: 60,
+                          height: 60,
+                          objectFit: "cover",
+                          border: "none",
+                          borderRadius: "50%",
+                        }}
+                        alt=""
+                      />
                       <td>{row?.script}</td>
                       <td>
                         <button

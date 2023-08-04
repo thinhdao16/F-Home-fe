@@ -78,6 +78,7 @@ const arrPostFil = useMemo(() => {
   
   const filteredData2 = filterDataByMonth(arrPostFil, 5);
   const filteredData3 = filterDataByMonth(arrPostFil, 6);
+  const filteredData4 = filterDataByMonth(arrPostFil, 7);
 
   const filteredDataPostDM1 = filterDataPostByMonth(dataPost, 1,15);
   const filteredDataPostDM2 = filterDataPostByMonth(dataPost, 1,16);
@@ -123,6 +124,7 @@ const arrPostFil = useMemo(() => {
     // { name: "January", total: filteredData1?.length },
     { name: "June", total: filteredData2?.length },
     { name: "July", total: filteredData3?.length },
+    { name: "August", total: filteredData4?.length}
   ];
   const dataPostDMChart = [
     { name: "" , total:""},

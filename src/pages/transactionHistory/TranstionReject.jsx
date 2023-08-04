@@ -98,6 +98,7 @@ const TranstionReject = () => {
                 <th>Image</th>
                 <th>Name</th>
                 <th>Point</th>
+                <th>ImgTrans</th>
                 <th>Transfer Contents</th>
                 <th>Progess</th>
               </tr>
@@ -116,6 +117,7 @@ const TranstionReject = () => {
                       <td>
                         <img
                           src={row?.user?.img}
+                          alt=""
                           style={{
                             width: 60,
                             height: 60,
@@ -127,7 +129,18 @@ const TranstionReject = () => {
                       </td>
                       <td>{row?.user?.fullname}</td>
                       <td>{row?.point}</td>
-                      <td>{row?.user?.email}</td>
+                      <img
+                          src={row?.img}
+                          alt=""
+                          style={{
+                            width: 60,
+                            height: 60,
+                            objectFit: "cover",
+                            border: "none",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      <td>{row?.script}</td>
                       <td>
                       <Tag color="magenta">Rejected</Tag>
                       </td>

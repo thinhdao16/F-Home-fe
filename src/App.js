@@ -10,6 +10,7 @@ import Protected from './components/context/Protected';
 import "./App.css"
 import TranstionReject from './pages/transactionHistory/TranstionReject';
 import TranstionApproved from './pages/transactionHistory/TranstionApproved';
+import UserLandlord from './pages/list/UserLandlord';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                 {/* <Route index element={<Protected><Home /></Protected>} /> */}
                 <Route index element={<Protected><Home /></Protected>} />
                 <Route path='users' index element={<Protected><List /></Protected>} />
+                <Route path='usersLand' index element={<Protected><UserLandlord /></Protected>} />
                 <Route path='products' index element={<Protected><Single /></Protected>} />
                 <Route path='points' index element={<Protected><New /></Protected>} />
                 <Route path='transRes' index element={<Protected><TranstionReject /></Protected>} />

@@ -41,7 +41,7 @@ const List = () => {
           pointEmailImg,
           pointtDescription,
           pointPlus,
-          pointId
+          pointId,
         };
       });
       setUsers({
@@ -51,7 +51,6 @@ const List = () => {
 
     fetchUsers();
   }, []);
-
 
   const handlePutUser = (id) => {
     console.log(id);
@@ -63,7 +62,7 @@ const List = () => {
       .then((response) => {
         // Assuming the response.data contains the updated data after the PUT request
         // Update state to re-render the component
-      
+
         axios
           .put(
             "https://f-home-be.vercel.app/pointplusEmail",
@@ -90,7 +89,7 @@ const List = () => {
         console.error(error);
       });
   };
-  
+
   const handleDeleteUser = (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       fetch(`https://f-home-be.vercel.app/deleteUser/${id}`, {

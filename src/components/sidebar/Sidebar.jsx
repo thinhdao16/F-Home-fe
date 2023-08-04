@@ -55,6 +55,15 @@ const Sidebar = () => {
       ),
         key :"2",
     },
+    {
+      label: (
+        <Link to="/home/usersLand">
+          <Inventory2Icon className="icon" />
+          <span>Landlord</span>
+        </Link>
+      ),
+        key :"3",
+    },
   ];
 
   return (
