@@ -71,31 +71,35 @@ const arrPostPublish = useMemo(() => {
     });
   };
 
-  const filteredDataPost1 = filterDataByMonth(arrPostPublish, 0);
-  const filteredDataPost2 = filterDataByMonth(arrPostPublish, 1);
-  const filteredDataPost3 = filterDataByMonth(arrPostPublish, 2);
+  const filteredDataPost1 = filterDataByMonth(arrPostPublish, 5);
+  const filteredDataPost2 = filterDataByMonth(arrPostPublish, 6);
+  const filteredDataPost3 = filterDataByMonth(arrPostPublish, 7);
 
   const filteredDataPostLike1 = filterDataByMonth(dataPostLike, 0);
   const filteredDataPostLike2 = filterDataByMonth(dataPostLike, 1);
   const filteredDataPostLike3 = filterDataByMonth(dataPostLike, 2);
 
-  const filteredDataPostCMT1 = filterDataByMonth(dataPostCMT, 0);
-  const filteredDataPostCMT2 = filterDataByMonth(dataPostCMT, 1);
-  const filteredDataPostCMT3 = filterDataByMonth(dataPostCMT, 2);
+  const filteredDataPostCMT1 = filterDataByMonth(dataPostCMT, 5);
+  const filteredDataPostCMT2 = filterDataByMonth(dataPostCMT, 6);
+  const filteredDataPostCMT3 = filterDataByMonth(dataPostCMT, 7);
 
 
   const dataPaidPost = [
     { name: "" , total:""},
     // { name: "January", total: filteredDataPost1?.length*5 },
-    { name: "February", total: filteredDataPost2?.length },
-    { name: "March", total: filteredDataPost3?.length },
+    { name: "June", total: filteredDataPost1?.length },
+    { name: "July", total: filteredDataPost2?.length },
+    { name: "August", total: filteredDataPost3?.length },
+
   ];
 
   const dataIntPost = [
     { name: "" , total:""},
     // { name: "January", total: filteredDataPostLike1.length + filteredDataPostCMT1.length },
-    { name: "February", total: filteredDataPostCMT2.length + filteredDataPostLike2.length },
-    { name: "March", total: filteredDataPostCMT3.length + filteredDataPostLike3.length},
+    { name: "June", total: filteredDataPostCMT1.length + filteredDataPostLike2.length },
+    { name: "July", total: filteredDataPostCMT2.length + filteredDataPostLike3.length},
+    { name: "August", total: filteredDataPostCMT3.length + filteredDataPostLike3.length},
+
   ];
 
   return (

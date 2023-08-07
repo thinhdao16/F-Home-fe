@@ -53,7 +53,7 @@ const Sidebar = () => {
           <span>Rejected</span>
         </Link>
       ),
-        key :"2",
+      key: "2",
     },
     {
       label: (
@@ -62,9 +62,33 @@ const Sidebar = () => {
           <span>Landlord</span>
         </Link>
       ),
-        key :"3",
+      key: "3",
+    },
+    {
+      label: (
+        <Link to="/home/usersFPT">
+          <Inventory2Icon className="icon" />
+          <span>Fptmember</span>
+        </Link>
+      ),
+      key: "4",
+    },
+    {
+      label: (
+        <Link to="/home/users">
+          <Inventory2Icon className="icon" />
+          <span>Users</span>
+        </Link>
+      ),
+      key: "5",
     },
   ];
+  const filteredPointItmes = items.filter((item) =>
+    ["0", "1", "2"].includes(item.key)
+  );
+  const filteredUserItems = items.filter((item) =>
+    ["3", "4", "5"].includes(item.key)
+  );
 
   return (
     <div className="sidebar">
@@ -84,10 +108,15 @@ const Sidebar = () => {
 
           <p className="title">LISTS MENU</p>
           <li>
-            <Link to="/home/users">
-              <Inventory2Icon className="icon" />
-              <span>Users</span>
-            </Link>
+          <Inventory2Icon className="icon" />
+            <Dropdown menu={{ items:filteredUserItems }} trigger={["click"]}>
+              <a onClick={(e) => e.preventDefault()}>
+                <span>
+                  User
+                  <DownOutlined />
+                </span>
+              </a>
+            </Dropdown>
           </li>
           <li>
             <Link to="/home/products">
@@ -96,8 +125,8 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Inventory2Icon className="icon" />
-            <Dropdown menu={{ items }} trigger={["click"]}>
+          <Inventory2Icon className="icon" />
+            <Dropdown menu={{ items:filteredPointItmes }} trigger={["click"]}>
               <a onClick={(e) => e.preventDefault()}>
                 <span>
                   Point

@@ -16,8 +16,7 @@ import { DataContext } from "../../pages/DataContext";
 
 const Chart = ({ users }) => {
   const {dataUser, setDataUser} = useContext(DataContext)
-
-
+  const[trans, setTrans] = useState([])
 
 const[dataPost , setDataPost] = useState([])
 const arrPostFil = useMemo(() => {
@@ -40,6 +39,14 @@ const arrPostFil = useMemo(() => {
         },
       });
       setDataPost(responsePost.data.data.postings);
+      const response = await axios.get("https://f-home-be.vercel.app/getformpoint", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userPosting.data.accessToken}`,
+        },
+      });
+      const data = response?.data?.data?.point?.filter((point) => point.status === "approved");
+      setTrans(data);
     } catch (error) {
       console.log(error);
     }
@@ -79,6 +86,10 @@ const arrPostFil = useMemo(() => {
   const filteredData2 = filterDataByMonth(arrPostFil, 5);
   const filteredData3 = filterDataByMonth(arrPostFil, 6);
   const filteredData4 = filterDataByMonth(arrPostFil, 7);
+
+  const filteredDataTrans2 = filterDataByMonth(trans, 5);
+  const filteredDataTrans3 = filterDataByMonth(trans, 6);
+  const filteredDataTrans4 = filterDataByMonth(trans, 7);
 
   const filteredDataPostDM1 = filterDataPostByMonth(dataPost, 1,15);
   const filteredDataPostDM2 = filterDataPostByMonth(dataPost, 1,16);
@@ -125,6 +136,14 @@ const arrPostFil = useMemo(() => {
     { name: "June", total: filteredData2?.length },
     { name: "July", total: filteredData3?.length },
     { name: "August", total: filteredData4?.length}
+  ];
+
+  const dataTrans = [
+    { name: "" , total:""},
+    // { name: "January", total: filteredData1?.length },
+    { name: "June", total: filteredDataTrans2?.length },
+    { name: "July", total: filteredDataTrans3?.length },
+    { name: "August", total: filteredDataTrans4?.length}
   ];
   const dataPostDMChart = [
     { name: "" , total:""},
@@ -196,13 +215,13 @@ const arrPostFil = useMemo(() => {
           />
         </AreaChart>
       </ResponsiveContainer>
-      <div className="title">Last 2 Months Posting</div>
+      <div className="title">Last 2 Months Transaction</div>
       <ResponsiveContainer width="100%" aspect={2 / 1}>
         
         <AreaChart
           width={"100%"}
           height={250}
-          data={dataPostDMChart}
+          data={dataTrans}
           margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
         >
           <defs>

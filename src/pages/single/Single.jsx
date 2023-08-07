@@ -164,7 +164,7 @@ const Single = () => {
                       );
                     })?.map((row) => (
                       <tr key={row?.fullname}>
-                        <td><img src={row?.img} style={{ width: 60, height: 60, objectFit: 'cover', border: 'none', borderRadius: '50%' }} /></td>
+                        <td><img alt="" src={row?.img} style={{ width: 60, height: 60, objectFit: 'cover', border: 'none', borderRadius: '50%' }} /></td>
                         <td>{row?.rooms?.roomName}</td>
                         <td>{row?.userPosting?.fullname}</td>
                         <td>{row?.title}</td>
